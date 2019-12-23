@@ -58,4 +58,72 @@ check. Here is where things start to diverge. I went through three different
 sources. First, Leslie Lamport's video tutorial, which I'll put into a
 subdirectory of this repository called `hello_lamport`.
 
+Even this has some confusion. Lamport's [video
+course](http://lamport.azurewebsites.net/video/videos.html) (whose style I
+adore) has one "hello world", while his book [Specifying
+Systems](https://lamport.azurewebsites.net/tla/book.html) has a different
+"hello world" based on an hour clock.
 
+From the video lecture (end of lecture 2), the "add one" specification.
+
+```tla
+--------------- MODULE SimpleProgram ---------------
+EXTENDS Integers
+VARIABLES i, pc
+Init == (pc = "start") /\ (i = 0)
+Next == \/ /\ pc = "start"
+           /\ i’ \in 0..1000
+           /\ pc’ = "middle"
+        \/ /\ pc = "middle"
+           /\ i’ = i + 1
+           /\ pc’ = "done"
+====================================================
+```
+
+And from the book, a simple hour clock.
+
+```tla
+---------------------- MODULE HourClock ----------------------
+EXTENDS Naturals
+VARIABLE hr
+HCini == hr \in (1 .. 12)
+HCnxt == hr' = IF hr # 12 THEN hr + 1 ELSE 1
+HC == HCini /\ [][HCnxt]_hr
+--------------------------------------------------------------
+THEOREM HC => []HCini
+==============================================================
+```
+
+I saved these to the files `add_one.tla` and `hour_clock.tla`, respectively.
+
+I will avoid momentarily commenting on the syntax while we focus on getting one
+of these specifications to compile, run, and model check. At this point, it's
+not clear which of these is even complete. For instance, one has a "theorem"
+block and one does not.
+
+We are already at somewhat of an impasse. Specifying Systems provides no
+explanation for how to compile or run the model checker on the simple clock,
+and the video lectures walk you through using the user interface. We'll get
+back to the UI momentarily, but for now let's see if we can't find another
+resource explaining how to do it without the UI.
+
+Looking around the TLA+ website I find a reference to the "TLA Hyperbook,"
+which is a book composed of a bunch of pdf files with hyperlinks between them
+(which, as you might expect, behaves strangely depending on the pdf reader
+you're using). The hello world example in this book is a "one bit clock", but
+the book only tells you what buttons to click in the UI to parse and run the
+model check. Lamport's website seems like a dead end.
+
+At this point I randomly search the internet for resources. That turned up a
+Medium
+[article](https://medium.com/@bellmar/introduction-to-tla-model-checking-in-the-command-line-c6871700a6a2)
+by Marianne Bellotti, who seems to agree with me that the UI is not ideal and
+has a workaround to use CLI tools. Great!
+
+
+
+# Syntax
+
+> All text before the opening and after the closing is not part of the module and
+> is ignored. Each sequence of - characters in the opening and the sequence of =
+> characters in the closing can be of any length greater than 3.
