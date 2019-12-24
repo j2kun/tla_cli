@@ -1,4 +1,4 @@
----------------------- MODULE HourClock ----------------------
+---------------------- MODULE hour_clock ----------------------
 EXTENDS Naturals
 VARIABLE hr
 HCini == hr \in (1 .. 12)
