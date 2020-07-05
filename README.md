@@ -17,7 +17,7 @@ mkdir ~/prototypes/tla
 cd ~/prototypes/tla
 git it   # alias for !git init && git commit -m "root" --allow-empty
 git remote add origin git@github.com:j2kun/tla_cli.git
-git push -u origin master
+git push -u origin main
 ```
 
 # Hello Lamport
